@@ -1,0 +1,16 @@
+.my-footer {
+  background-color: #000066;
+  margin-top: 2.8em;
+  color: #ffffff;
+  font-size: 80%;
+  padding: 1.5em;
+  height: 8em;
+}
+
+.datepicker-btn {
+  z-index: 10000;
+}
+
+.half {
+  width: 50%;
+}

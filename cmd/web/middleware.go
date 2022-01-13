@@ -15,16 +15,15 @@ func SaySomethingInTheConsole(next http.Handler) http.Handler {
 }
 
 func NoSurf(next http.Handler) http.Handler {
-	csfrHandler := nosurf.New(next)
+	csrfHandler := nosurf.New(next)
 
-	csfrHandler.SetBaseCookie(http.Cookie{
+	csrfHandler.SetBaseCookie(http.Cookie{
 		HttpOnly: true,
-		Path: "/",
-		Secure: app.InProduction,
+		Path:     "/",
+		Secure:   app.InProduction,
 		SameSite: http.SameSiteLaxMode,
 	})
-
-	return csfrHandler
+	return csrfHandler
 }
 
 func SessionLoad(next http.Handler) http.Handler {

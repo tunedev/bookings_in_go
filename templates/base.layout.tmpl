@@ -11,16 +11,220 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/css/datepicker-bs5.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/notie/dist/notie.min.css"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <title>Smythe Booking - Reservation</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Rooms
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li>
+                  <a class="dropdown-item" href="/captain"
+                    >Captain's Quarters</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/major"
+                    >Major's Lounge</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/search-availability"
+                tabindex="-1"
+                aria-disabled="true"
+                >Book Now</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                href="/contact"
+                tabindex="-1"
+                aria-disabled="true"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     {{block "css" .}} 
     
     {{end}}
-    <title>Document</title>
-  </head>
-  <body>
     {{block "content" .}} 
     
     {{end}}
-    
+
+    <div class="my-footer">
+      <div class="row">
+        <div class="col"><p>left</p></div>
+        <div class="col">
+          <p>middle</p>
+        </div>
+        <div class="col">
+          <p>right</p>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.2.0/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      (function () {
+        "use strict";
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll(".needs-validation");
+
+        // Loop over them and prevent submission
+        Array.prototype.slice.call(forms).forEach(function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+
+              form.classList.add("was-validated");
+            },
+            false
+          );
+        });
+      })();
+
+      function notify({ msg, type = "success", position }) {
+        notie.alert({
+          type,
+          text: msg,
+          position,
+        });
+      }
+
+      function Prompt() {
+        function toast({ msg = "", position = "top-end", icon = "success" }) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position,
+            icon,
+            title: msg,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire();
+        }
+
+        function status(icon, { msg = "", title = "", footer = "" }) {
+          Swal.fire({
+            icon,
+            title,
+            text: msg,
+            footer,
+          });
+        }
+
+        function success(c) {
+          status("success", c);
+        }
+        function error(c) {
+          status("error", c);
+        }
+
+        async function custom({ msg = "", title = "" }) {
+          const { value: formValues } = await Swal.fire({
+            title,
+            html: msg,
+            showCancelButton: true,
+            focusConfirm: false,
+            backdrop: false,
+            willOpen: () => {
+              const elem = document.getElementById("avail-check");
+              const rp = new DateRangePicker(elem, {
+                format: "yyyy-mm-dd",
+                showOnFocus: true,
+                buttonClass: "datepicker-btn",
+              });
+            },
+            didOpen: () => {
+              document.getElementById("startModal").removeAttribute("disabled");
+              document.getElementById("endModal").removeAttribute("disabled");
+            },
+            preConfirm: () => {
+              return [
+                document.getElementById("startModal").value,
+                document.getElementById("endModal").value,
+              ];
+            },
+          });
+
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues));
+          }
+        }
+
+        return {
+          toast,
+          success,
+          error,
+          custom,
+        };
+      }
+    </script>
     {{block "js" .}} 
     
     {{end}}

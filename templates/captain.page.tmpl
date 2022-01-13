@@ -1,0 +1,88 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+ <div class="container mt-4">
+      <div class="row">
+        <div class="col">
+          <img
+            class="img-fluid img-thumbnail rounded mx-auto d-block half"
+            src="/static/images/generals-quarters.png"
+            alt="Towel"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <h1 class="text-center">Welcome to Captains Quarters</h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident
+          esse voluptatibus dolor mollitia aut, dolores quaerat eos corporis?
+          Recusandae, rem architecto, at impedit vero omnis repudiandae quae
+          minus, atque a aspernatur doloribus ipsam pariatur accusamus inventore
+          placeat consectetur ducimus eos? Molestias nemo, consequatur
+          recusandae eum soluta illum dolorum a commodi ipsa sed iure
+          perferendis autem est placeat quod dolores temporibus dignissimos
+          mollitia minus deserunt? Corporis nemo totam rerum accusamus est,
+          tenetur, perferendis porro voluptates ab mollitia, quaerat aliquid
+          fugiat. Veniam odit odio aliquid cupiditate laudantium architecto,
+          fugit quam enim quod fuga repellat amet impedit nam, reprehenderit vel
+          cumque et deserunt itaque magnam. Quibusdam delectus quos unde magnam
+          minus illum dignissimos necessitatibus, distinctio, molestiae
+          doloremque consequuntur soluta sapiente aliquid tenetur, voluptatem
+          pariatur? Eligendi possimus placeat atque sed. Quasi placeat ipsum
+          excepturi alias laboriosam cumque assumenda omnis magni optio
+          eligendi! Quis esse, labore similique delectus amet impedit aliquid ea
+          optio enim repudiandae.
+        </p>
+      </div>
+      <div class="d-grid gap-2 col-4 mx-auto">
+        <a href="#!" id="color" class="btn btn-success"
+          >Check Availability</a
+        >
+      </div>
+    </div>
+
+
+{{end}}
+
+    {{define "js"}}
+    <script>
+    document.getElementById("color").addEventListener("click", () => {
+        const html = `
+            <form method="get" action="" class="needs-validation m-3" novalidate>
+                  <div id="avail-check">
+                    <div class="row">
+                        <div class="col">
+                            <label for="startModal" class="form-label">Starting Date</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="startModal"
+                              name="startModal"
+                              required
+                              disabled
+                            />
+                        </div>
+                        <div class="col">
+                          <div class="mb-3">
+                            <label for="endModal" class="form-label">Ending Date</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="endModal"
+                              name="endModal"
+                              required
+                              disabled
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+              </form>
+        `;
+        const prompt = Prompt();
+        prompt.custom({ msg: html, title: "Check Availability" });
+      });
+    </script>
+
+    {{end}}

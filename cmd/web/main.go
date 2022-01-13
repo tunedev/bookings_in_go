@@ -34,7 +34,7 @@ func main() {
 	}
 
 	app.TemplateCache = ts
-	app.UseConfig = false
+	app.UseCache = false
 
 	repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(repo)
