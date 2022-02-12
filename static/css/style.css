@@ -1,10 +1,12 @@
 .my-footer {
   background-color: #000066;
-  margin-top: 2.8em;
   color: #ffffff;
+  width: 100%;
   font-size: 80%;
   padding: 1.5em;
   height: 8em;
+  position: absolute;
+  bottom: 0;
 }
 
 .datepicker-btn {

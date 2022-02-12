@@ -6,8 +6,7 @@
         <div class="col-3"></div>
         <div class="col-6">
           <h1>Search For Availability</h1>
-          <form action="/search-availability" method="POST" class="needs-validation" novalidate>
-          <input type="hidden" name="csfr_token" value={{.CSRFToken}}/>
+          <form id="form" class="needs-validation" novalidate>
             <div id="reservation-check">
               <div class="row">
                 <div class="col">
@@ -60,6 +59,23 @@
   const rangepicker = new DateRangePicker(elem, {
     format: "yyyy-mm-dd",
   });
+
+  const form = document.getElementById("form")
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
+
+    formData = new FormData(form)
+
+    console.log("start =>", formData.get("start"))
+    console.log("end =>", formData.get("end"))
+
+     fetch("/search-availability", {
+      method: "post",
+      body: formData,
+      headers: {"X-CSRF-Token":"{{.CSRFToken}}"}
+    }).then(res => res.json()).then(data => console.log(data))
+  })
 
 </script>
 {{end}}

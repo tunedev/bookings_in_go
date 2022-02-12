@@ -5,11 +5,11 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
-	"github.com/tunedev/bookings_in_go/pkg/config"
-	"github.com/tunedev/bookings_in_go/pkg/handlers"
+	"github.com/tunedev/bookings_in_go/internal/config"
+	"github.com/tunedev/bookings_in_go/internal/handlers"
 )
 
-func routes(app *config.AppConfig) http.Handler{
+func routes(app *config.AppConfig) http.Handler {
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
@@ -23,6 +23,7 @@ func routes(app *config.AppConfig) http.Handler{
 	mux.Get("/major", handlers.Repo.Major)
 	mux.Get("/search-availability", handlers.Repo.Availability)
 	mux.Post("/search-availability", handlers.Repo.PostAvailability)
+	mux.Post("/search-availability-json", handlers.Repo.PostAvailabilityJson)
 	mux.Get("/make-reservation", handlers.Repo.MakeReservation)
 
 	fileServer := http.FileServer(http.Dir("./static/"))

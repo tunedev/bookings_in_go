@@ -49,7 +49,7 @@
     <script>
     document.getElementById("color").addEventListener("click", () => {
         const html = `
-            <form method="get" action="" class="needs-validation m-3" novalidate>
+            <form id="avail-check-form" class="needs-validation m-3" novalidate>
                   <div id="avail-check">
                     <div class="row">
                         <div class="col">
@@ -81,7 +81,34 @@
               </form>
         `;
         const prompt = Prompt();
-        prompt.custom({ msg: html, title: "Check Availability" });
+        prompt.custom({ 
+          msg: html, 
+          title: "Check Availability", 
+          willOpen: () => {
+            const elem = document.getElementById("avail-check");
+              const rp = new DateRangePicker(elem, {
+                format: "yyyy-mm-dd",
+                showOnFocus: true,
+                buttonClass: "datepicker-btn",
+              });
+          },
+          didOpen: () => {
+              document.getElementById("startModal").removeAttribute("disabled");
+              document.getElementById("endModal").removeAttribute("disabled");
+            },
+          callBack: (result) => {
+            console.log("Got called", result)
+            
+            const form = document.getElementById("avail-check-form")
+            const formData = new FormData(form)
+
+            fetch("/search-availability-json", {
+              method: "post",
+              body: formData,
+              headers: {"X-CSRF-Token": "{{.CSRFToken}}"}
+            }).then(res => res.json()).then(data => console.log("Final result =>",data))
+          }
+        });
       });
     </script>
 

@@ -7,12 +7,13 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/tunedev/bookings_in_go/pkg/config"
-	"github.com/tunedev/bookings_in_go/pkg/handlers"
-	"github.com/tunedev/bookings_in_go/pkg/renders"
+	"github.com/tunedev/bookings_in_go/internal/config"
+	"github.com/tunedev/bookings_in_go/internal/handlers"
+	"github.com/tunedev/bookings_in_go/internal/renders"
 )
 
 const portNumber = ":3000"
+
 var app config.AppConfig
 var session *scs.SessionManager
 
@@ -43,13 +44,13 @@ func main() {
 
 	fmt.Printf("My app server running on port http://localhost%s \n", portNumber)
 
-	srv := &http.Server {
-		Addr: portNumber,
+	srv := &http.Server{
+		Addr:    portNumber,
 		Handler: routes(&app),
 	}
 
 	err = srv.ListenAndServe()
-	if err != nil{
+	if err != nil {
 		log.Fatal(err)
 	}
 }

@@ -185,24 +185,23 @@
           status("error", c);
         }
 
-        async function custom({ msg = "", title = "" }) {
-          const { value: formValues } = await Swal.fire({
+        async function custom(c) {
+          const { msg = "", title = "" } = c
+          const { value: result } = await Swal.fire({
             title,
             html: msg,
             showCancelButton: true,
             focusConfirm: false,
             backdrop: false,
             willOpen: () => {
-              const elem = document.getElementById("avail-check");
-              const rp = new DateRangePicker(elem, {
-                format: "yyyy-mm-dd",
-                showOnFocus: true,
-                buttonClass: "datepicker-btn",
-              });
+              if(c.willOpen !== undefined){
+                c.willOpen()
+              }
             },
             didOpen: () => {
-              document.getElementById("startModal").removeAttribute("disabled");
-              document.getElementById("endModal").removeAttribute("disabled");
+              if(c.didOpen !== undefined) {
+                c.didOpen()
+              }
             },
             preConfirm: () => {
               return [
@@ -212,8 +211,18 @@
             },
           });
 
-          if (formValues) {
-            Swal.fire(JSON.stringify(formValues));
+          if(result) {
+            if(result.dismiss !== Swal.DismissReason.cancel){
+              if(result.value !== ""){
+                if(c.callBack !== undefined) {
+                  c.callBack(result)
+                }
+              }else{
+                c.callBack(false)
+              }
+            }else {
+              c.callBack(false)
+            }
           }
         }
 
