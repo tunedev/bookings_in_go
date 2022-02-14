@@ -66,10 +66,6 @@
     e.preventDefault()
 
     formData = new FormData(form)
-
-    console.log("start =>", formData.get("start"))
-    console.log("end =>", formData.get("end"))
-
      fetch("/search-availability", {
       method: "post",
       body: formData,

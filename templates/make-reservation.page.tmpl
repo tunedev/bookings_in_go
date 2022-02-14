@@ -5,7 +5,7 @@
       <div class="row">
         <div class="col">
           <h1 class="">Make Reservation</h1>
-          <form method="get" class="needs-validation" novalidate>
+          <form id="make-reservation"  novalidate>
             <div class="mb-3">
               <label for="firstname" class="form-label">First Name: </label>
               <input
@@ -58,3 +58,21 @@
       </div>
     </div>
 {{end}}
+
+{{define "js"}}
+  <script>
+    const form = document.getElementById("make-reservation")
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+
+      formData = new FormData(form)
+      fetch("/make-reservation", {
+        method: "post",
+        body: formData,
+        headers: {"X-CSRF-Token":"{{.CSRFToken}}"}
+      }).then(res => res.json()).then(data => console.log(data))
+    })
+
+  </script>
+  {{
